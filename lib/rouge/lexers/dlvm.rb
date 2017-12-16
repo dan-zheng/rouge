@@ -20,14 +20,26 @@ module Rouge
         rule %r(\/\/.*?$), Comment::Single
       end
 
-      # Aggregate types (tensors, arrays)
-      state :agg_type do
+      # Tensor type
+      state :tensor_type do
+        mixin :types
+        mixin :inline_whitespace
+
+        rule /x|[0-9]+|_/, Keyword::Type
+        rule /\[/, Keyword::Type, :array_type
+        rule /</, Keyword::Type, :push
+        rule />/, Keyword::Type, :pop!
+      end
+
+      # Array type
+      state :array_type do
         mixin :types
         mixin :inline_whitespace
 
         rule /x|[0-9]+/, Keyword::Type
-        rule /[\[<]/, Keyword::Type, :push
-        rule /[\]>]/, Keyword::Type, :pop!
+        rule /[<]/, Keyword::Type, :tensor_type
+        rule /\[/, Keyword::Type, :push
+        rule /\]/, Keyword::Type, :pop!
       end
 
       state :basic do
@@ -40,7 +52,8 @@ module Rouge
         rule /0[xX][a-fA-F0-9]+/, Num
         rule /-?\d+(?:[.]\d+)?(?:[eE][-+]?\d+(?:[.]\d+)?)?/, Num
 
-        rule /<|\[(?!gradient)/, Keyword::Type, :agg_type
+        rule /</, Keyword::Type, :tensor_type
+        rule /<|\[(?!gradient)/, Keyword::Type, :array_type
         rule /[={}()\[\]*:.,]/, Punctuation
         rule %r(->|[-/=+*%!&|^.~•⨂]+), Operator
       end
