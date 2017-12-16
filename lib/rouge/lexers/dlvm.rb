@@ -75,13 +75,13 @@ module Rouge
 
       builtin_instructions = %w(
         literal branch conditional return dataTypeCast scan reduce dot matrixMultiply
-        concatenate transpose slice shapeCast bitCast extract insert apply allocateStack
-        allocateHeap allocateBox projectBox retain release deallocate load store
-        elementPointer copy trap random select lessThan lessThanOrEqual greaterThan
-        greaterThanOrEqual equal notEqual and or add subtract multiply divide min max
-        truncateDivide floorDivide modulo power mean sinh cosh tanh log exp negate
-        sign square sqrt round rsqrt ceil floor tan cos sin acos asin atan lgamma
-        digamma erf erfc rint not
+        concatenate transpose slice rankLift shapeCast bitCast extract insert apply
+        allocateStack allocateHeap allocateBox projectBox retain release deallocate
+        load store elementPointer copy trap random select lessThan lessThanOrEqual
+        greaterThan greaterThanOrEqual equal notEqual and or add subtract multiply
+        divide min max truncateDivide floorDivide modulo power mean sinh cosh tanh
+        log exp negate sign square sqrt round rsqrt ceil floor tan cos sin acos asin
+        atan lgamma digamma erf erfc rint not
       )
 
       state :keywords do
