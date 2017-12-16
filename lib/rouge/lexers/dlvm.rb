@@ -19,9 +19,8 @@ module Rouge
         rule %r(\/\/.*?$), Comment::Single
         rule /\s+/, Text
 
-        rule /'#{identifier}\s*(?=[(])/, Name::Label
-
         rule /@#{identifier}/, Name::Function
+        rule /'#{identifier}\s*(?=[(])/, Name::Label
         rule /#{id}\s*/, Name::Variable
 
         rule /c?#{string}/, Str
@@ -29,8 +28,9 @@ module Rouge
         rule /0[xX][a-fA-F0-9]+/, Num
         rule /-?\d+(?:[.]\d+)?(?:[eE][-+]?\d+(?:[.]\d+)?)?/, Num
 
-        rule /[=<>{}\[\]()*:.,]|x/, Punctuation
-        rule %r([-/=+*%<>!&|^.~•⨂]+), Operator
+        rule /[={}\[\]()*:.,]/, Punctuation
+        rule %r(->|[-/=+*%!&|^.~•⨂]+), Operator
+        rule /[<>x]/, Keyword::Declaration
       end
 
       builtin_types = %w(
@@ -56,12 +56,12 @@ module Rouge
         greaterThanOrEqual equal notEqual and or add subtract multiply divide min max
         truncateDivide floorDivide modulo power mean sinh cosh tanh log exp negate
         sign square sqrt round rsqrt ceil floor tan cos sin acos asin atan lgamma
-        digamma erf erfc rint not x f16 f32 f64 bool
+        digamma erf erfc rint not
       )
 
       state :keywords do
         rule /#{builtin_instructions.join('|')}/, Keyword
-        rule /#{builtin_keywords.join('|')}/, Keyword
+        rule /#{builtin_keywords.join('|')}/, Keyword::Reserved
       end
 
       state :root do
