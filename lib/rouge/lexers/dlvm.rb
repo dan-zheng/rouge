@@ -12,13 +12,25 @@ module Rouge
 
       string = /"[^"]*?"/
       identifier = /([-a-zA-Z$._][-a-zA-Z$._0-9]*|#{string})/
-      use = /(%[0-9][1-9]*.[0-9][1-9]*)/
+      use = /(%[0-9]+.[0-9]+)/
       id = /(%#{identifier}|#{use})/
 
-      state :basic do
-        rule %r(\/\/.*?$), Comment::Single
+      state :inline_whitespace do
         rule /\s+/, Text
+        rule %r(\/\/.*?$), Comment::Single
+      end
 
+      # Aggregate types (tensors, arrays)
+      state :agg_type do
+        mixin :types
+        mixin :inline_whitespace
+
+        rule /x|[0-9]+/, Keyword::Type
+        rule /[\[<]/, Keyword::Type, :push
+        rule /[\]>]/, Keyword::Type, :pop!
+      end
+
+      state :basic do
         rule /@#{identifier}/, Name::Function
         rule /'#{identifier}\s*(?=[(])/, Name::Label
         rule /#{id}\s*/, Name::Variable
@@ -28,9 +40,9 @@ module Rouge
         rule /0[xX][a-fA-F0-9]+/, Num
         rule /-?\d+(?:[.]\d+)?(?:[eE][-+]?\d+(?:[.]\d+)?)?/, Num
 
-        rule /[={}\[\]()*:.,]/, Punctuation
+        rule /<|\[(?!gradient)/, Keyword::Type, :agg_type
+        rule /[={}()\[\]*:.,]/, Punctuation
         rule %r(->|[-/=+*%!&|^.~•⨂]+), Operator
-        rule /[<>x]/, Keyword::Declaration
       end
 
       builtin_types = %w(
@@ -65,6 +77,7 @@ module Rouge
       end
 
       state :root do
+        mixin :inline_whitespace
         mixin :basic
         mixin :keywords
         mixin :types
