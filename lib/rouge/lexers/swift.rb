@@ -29,6 +29,10 @@ module Rouge
         true false nil
       )
 
+      builtin_funcs = Set.new %w(
+        lambda
+      )
+
       start { push :bol }
 
       # beginning of line
@@ -128,7 +132,9 @@ module Rouge
         end
 
         rule id do |m|
-          if keywords.include? m[0]
+          if builtin_funcs.include? m[0]
+            token Name::Function
+          elsif keywords.include? m[0]
             token Keyword
           elsif declarations.include? m[0]
             token Keyword::Declaration
