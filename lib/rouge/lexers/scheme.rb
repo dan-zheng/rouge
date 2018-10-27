@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -85,8 +86,8 @@ module Rouge
           groups Str::Symbol, Text, Punctuation
         end
 
-        rule /\(/, Punctuation, :command
-        rule /\)/, Punctuation
+        rule /\(|\[/, Punctuation, :command
+        rule /\)|\]/, Punctuation
 
         rule id, Name::Variable
       end

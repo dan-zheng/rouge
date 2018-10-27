@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -9,7 +10,7 @@ module Rouge
       tag 'perl'
       aliases 'pl'
 
-      filenames '*.pl', '*.pm'
+      filenames '*.pl', '*.pm', '*.t'
       mimetypes 'text/x-perl', 'application/x-perl'
 
       def self.detect?(text)
@@ -77,11 +78,11 @@ module Rouge
         rule /(?:eq|lt|gt|le|ge|ne|not|and|or|cmp)\b/, Operator::Word
 
         # common delimiters
-        rule %r(s/(\\\\|\\/|[^/])*/(\\\\|\\/|[^/])*/[egimosx]*), re_tok
-        rule %r(s!(\\\\|\\!|[^!])*!(\\\\|\\!|[^!])*![egimosx]*), re_tok
-        rule %r(s\\(\\\\|[^\\])*\\(\\\\|[^\\])*\\[egimosx]*), re_tok
-        rule %r(s@(\\\\|\\@|[^@])*@(\\\\|\\@|[^@])*@[egimosx]*), re_tok
-        rule %r(s%(\\\\|\\%|[^%])*%(\\\\|\\%|[^%])*%[egimosx]*), re_tok
+        rule %r(s/(\\\\|\\/|[^/])*/(\\\\|\\/|[^/])*/[msixpodualngc]*), re_tok
+        rule %r(s!(\\\\|\\!|[^!])*!(\\\\|\\!|[^!])*![msixpodualngc]*), re_tok
+        rule %r(s\\(\\\\|[^\\])*\\(\\\\|[^\\])*\\[msixpodualngc]*), re_tok
+        rule %r(s@(\\\\|\\@|[^@])*@(\\\\|\\@|[^@])*@[msixpodualngc]*), re_tok
+        rule %r(s%(\\\\|\\%|[^%])*%(\\\\|\\%|[^%])*%[msixpodualngc]*), re_tok
 
         # balanced delimiters
         rule %r(s{(\\\\|\\}|[^}])*}\s*), re_tok, :balanced_regex
@@ -89,9 +90,13 @@ module Rouge
         rule %r(s\[(\\\\|\\\]|[^\]])*\]\s*), re_tok, :balanced_regex
         rule %r[s\((\\\\|\\\)|[^\)])*\)\s*], re_tok, :balanced_regex
 
-        rule %r(m?/(\\\\|\\/|[^/\n])*/[gcimosx]*), re_tok
+        rule %r(m?/(\\\\|\\/|[^/\n])*/[msixpodualngc]*), re_tok
         rule %r(m(?=[/!\\{<\[\(@%\$])), re_tok, :balanced_regex
-        rule %r(((?<==~)|(?<=\())\s*/(\\\\|\\/|[^/])*/[gcimosx]*),
+
+        # Perl allows any non-whitespace character to delimit
+        # a regex when `m` is used.
+        rule %r(m(\S).*\1[msixpodualngc]*), re_tok
+        rule %r(((?<==~)|(?<=\())\s*/(\\\\|\\/|[^/])*/[msixpodualngc]*),
           re_tok, :balanced_regex
 
         rule /\s+/, Text
@@ -104,6 +109,7 @@ module Rouge
         rule /__END__\b/, Comment::Preproc, :end_part
         rule /\$\^[ADEFHILMOPSTWX]/, Name::Variable::Global
         rule /\$[\\"'\[\]&`+*.,;=%~?@$!<>(^\|\/-](?!\w)/, Name::Variable::Global
+        rule /[-+\/*%=<>&^\|!\\~]=?/, Operator
         rule /[$@%#]+/, Name::Variable, :varname
 
         rule /0_?[0-7]+(_[0-7]+)*/, Num::Oct
@@ -128,7 +134,6 @@ module Rouge
         rule /sub\s+/, Keyword, :funcname
         rule /\[\]|\*\*|::|<<|>>|>=|<=|<=>|={3}|!=|=~|!~|&&?|\|\||\.{1,3}/,
           Operator
-        rule /[-+\/*%=<>&^\|!\\~]=?/, Operator
         rule /[()\[\]:;,<>\/?{}]/, Punctuation
         rule(/(?=\w)/) { push :name }
       end

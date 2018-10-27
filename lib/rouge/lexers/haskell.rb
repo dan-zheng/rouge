@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -55,7 +56,6 @@ module Rouge
 
         rule /\bimport\b/, Keyword::Reserved, :import
         rule /\bmodule\b/, Keyword::Reserved, :module
-        rule /\berror\b/, Name::Exception
         rule /\b(?:#{reserved.join('|')})\b/, Keyword::Reserved
         # not sure why, but ^ doesn't work here
         # rule /^[_a-z][\w']*/, Name::Function
@@ -82,6 +82,15 @@ module Rouge
 
         rule /\[\s*\]/, Keyword::Type
         rule /\(\s*\)/, Name::Builtin
+
+        # Quasiquotations
+        rule /(\[)([_a-z][\w']*)(\|)/ do |m|
+          token Operator, m[1]
+          token Name, m[2]
+          token Operator, m[3]
+          push :quasiquotation
+        end
+
         rule /[\[\](),;`{}]/, Punctuation
       end
 
@@ -161,6 +170,12 @@ module Rouge
       state :character_end do
         rule /'/, Str::Char, :pop!
         rule /./, Error, :pop!
+      end
+
+      state :quasiquotation do
+        rule /\|\]/, Operator, :pop!
+        rule /[^\|]+/m, Text
+        rule /\|/, Text
       end
 
       state :string do

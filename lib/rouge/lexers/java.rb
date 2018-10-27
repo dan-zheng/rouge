@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -20,7 +21,7 @@ module Rouge
         public static strictfp super synchronized throws transient volatile
       )
 
-      types = %w(boolean byte char double float int long short void)
+      types = %w(boolean byte char double float int long short var void)
 
       id = /[a-zA-Z_][a-zA-Z0-9_]*/
 

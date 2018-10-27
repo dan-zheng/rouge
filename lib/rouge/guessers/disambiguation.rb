@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Rouge
   module Guessers
     class Disambiguation < Guesser
@@ -80,6 +82,9 @@ module Rouge
       disambiguate '*.m' do
         next ObjectiveC if matches?(/@(end|implementation|protocol|property)\b/)
         next ObjectiveC if contains?('@"')
+
+        next Mathematica if contains?('(*')
+        next Mathematica if contains?(':=')
 
         next Matlab if matches?(/^\s*?%/)
       end

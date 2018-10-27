@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   def self.version
-    "2.2.2"
+    "3.3.0"
   end
 end

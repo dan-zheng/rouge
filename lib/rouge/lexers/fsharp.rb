@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -6,7 +7,7 @@ module Rouge
       title "FSharp"
       desc 'F# (fsharp.net)'
       tag 'fsharp'
-      filenames '*.fs', '*.fsx'
+      filenames '*.fs', '*.fsi', '*.fsx'
       mimetypes 'application/fsharp-script', 'text/x-fsharp', 'text/x-fsi'
 
       def self.keywords

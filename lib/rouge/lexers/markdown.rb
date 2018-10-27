@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -76,7 +77,7 @@ module Rouge
         end
 
         # links and images
-        rule /(!?\[)(#{edot}+?)(\])/ do
+        rule /(!?\[)(#{edot}*?)(\])/ do
           groups Punctuation, Name::Variable, Punctuation
           push :link
         end

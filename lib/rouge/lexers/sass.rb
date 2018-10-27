@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -42,7 +43,7 @@ module Rouge
 
         rule /:/, Name::Attribute, :old_style_attr
 
-        rule(/(?=.+?:([^a-z]|$))/) { push :attribute }
+        rule(/(?=[^\[\n]+?:([^a-z]|$))/) { push :attribute }
 
         rule(//) { push :selector }
       end

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -13,6 +14,7 @@ module Rouge
       state :basic do
         rule /\s+/, Text
         rule /^#.*/, Comment::Single
+        rule /%.*/, Comment::Single
         rule /\/\*/, Comment::Multiline, :nested_comment
 
         rule /[\[\](){}|.,;!]/, Punctuation

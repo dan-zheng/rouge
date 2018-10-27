@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 # not required by the main lib.
 # to use this module, require 'rouge/cli'.
@@ -304,7 +305,9 @@ module Rouge
         yield %|usage: rougify style [<theme-name>] [<options>]|
         yield %||
         yield %|Print CSS styles for the given theme.  Extra options are|
-        yield %|passed to the theme.  Theme defaults to thankful_eyes.|
+        yield %|passed to the theme. To select a mode (light/dark) for the|
+        yield %|theme, append '.light' or '.dark' to the <theme-name>|
+        yield %|respectively. Theme defaults to thankful_eyes.|
         yield %||
         yield %|options:|
         yield %|  --scope	(default: .highlight) a css selector to scope by|
@@ -363,7 +366,7 @@ module Rouge
         puts "== Available Lexers =="
 
         Lexer.all.sort_by(&:tag).each do |lexer|
-          desc = "#{lexer.desc}"
+          desc = String.new("#{lexer.desc}")
           if lexer.aliases.any?
             desc << " [aliases: #{lexer.aliases.join(',')}]"
           end

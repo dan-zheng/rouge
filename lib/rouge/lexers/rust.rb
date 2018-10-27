@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -6,7 +7,12 @@ module Rouge
       title "Rust"
       desc 'The Rust programming language (rust-lang.org)'
       tag 'rust'
-      aliases 'rs'
+      aliases 'rs',
+        # So that directives from https://github.com/budziq/rust-skeptic
+        # do not prevent highlighting.
+        'rust,no_run', 'rs,no_run',
+        'rust,ignore', 'rs,ignore',
+        'rust,should_panic', 'rs,should_panic'
       filenames '*.rs'
       mimetypes 'text/x-rust'
 
@@ -18,8 +24,8 @@ module Rouge
         @keywords ||= %w(
           as assert break const copy do drop else enum extern fail false
           fn for if impl let log loop match mod move mut priv pub pure
-          ref return self static struct true trait type unsafe use while
-          box
+          ref return self static struct true trait type unsafe use where
+          while box
         )
       end
 

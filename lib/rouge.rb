@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 # stdlib
 require 'pathname'
@@ -80,3 +81,4 @@ load load_dir.join('rouge/themes/molokai.rb')
 load load_dir.join('rouge/themes/monokai_sublime.rb')
 load load_dir.join('rouge/themes/gruvbox.rb')
 load load_dir.join('rouge/themes/tulip.rb')
+load load_dir.join('rouge/themes/pastie.rb')

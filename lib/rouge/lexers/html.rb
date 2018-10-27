@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -37,6 +38,7 @@ module Rouge
         rule /<\s*style\s*/m do
           token Name::Tag
           @css.reset!
+          @lang = @css
           push :style_content
           push :tag
         end
@@ -80,7 +82,7 @@ module Rouge
 
       state :tag do
         rule /\s+/m, Text
-        rule /[a-zA-Z0-9_:-]+\s*=/m, Name::Attribute, :attr
+        rule /[a-zA-Z0-9_:-]+\s*=\s*/m, Name::Attribute, :attr
         rule /[a-zA-Z0-9_:-]+/, Name::Attribute
         rule %r(/?\s*>)m, Name::Tag, :pop!
       end
@@ -124,13 +126,13 @@ module Rouge
 
       state :style_content do
         rule /[^<]+/ do
-          delegate @css
+          delegate @lang
         end
 
         rule %r(<\s*/\s*style\s*>)m, Name::Tag, :pop!
 
         rule /</ do
-          delegate @css
+          delegate @lang
         end
       end
     end

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -14,7 +15,7 @@ module Rouge
 
       tag 'javascript'
       aliases 'js'
-      filenames '*.js'
+      filenames '*.js', '*.mjs'
       mimetypes 'application/javascript', 'application/x-javascript',
                 'text/javascript', 'text/x-javascript'
 
@@ -206,6 +207,7 @@ module Rouge
 
       state :dq do
         rule /[^\\"]+/, Str::Double
+        rule /\\n/, Str::Escape
         rule /\\"/, Str::Escape
         rule /"/, Str::Double, :pop!
       end

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
 
 module Rouge
   module Lexers
@@ -20,7 +21,7 @@ module Rouge
         mixin :content_common
 
         rule(/(?=[^;{}][;}])/) { push :attribute }
-        rule(/(?=[^;{}:]+:[^a-z])/) { push :attribute }
+        rule(/(?=[^;{}:\[]+:[^a-z])/) { push :attribute }
 
         rule(//) { push :selector }
       end

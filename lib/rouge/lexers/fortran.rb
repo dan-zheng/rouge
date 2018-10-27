@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*- #
+# frozen_string_literal: true
+
 # vim: set ts=2 sw=2 et:
 
 # TODO: Implement format list support.
@@ -10,8 +12,8 @@ module Rouge
       desc "Fortran 2008 (free-form)"
 
       tag 'fortran'
-      filenames '*.f90', '*.f95', '*.f03', '*.f08',
-                '*.F90', '*.F95', '*.F03', '*.F08'
+      filenames '*.f', '*.f90', '*.f95', '*.f03', '*.f08',
+                '*.F', '*.F90', '*.F95', '*.F03', '*.F08'
       mimetypes 'text/x-fortran'
 
       name = /[A-Z][_A-Z0-9]*/i

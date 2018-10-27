@@ -128,6 +128,10 @@ fun makeField(s: String): Field {
     return Field(longestLine.length, lines.size) { i, j -> lines[i][j] == '*' }
 }
 
+fun `backtickedFunction`() {
+    return
+}
+
 fun <T, V> genericFunction() {
     return
 }
@@ -136,8 +140,18 @@ fun String.extensionFunction() {
    return
 }
 
+fun `String`.`backTickedExtensionFunction`() {
+   return
+}
+
 fun <T, V> String.genericExtensionFunction() {
    return
 }
+
+@Deprecated("This is an annotation")
+fun anAnnotatedFunction() = {
+}
+
+val (a, b) = pair
 
 // comment at EOF (#797)
